@@ -4,12 +4,12 @@ Ping-Channel
 Covert channel project for CYEN 402
 
 ##Description
-This is a simple program that creates a cover thannel between client and server. 
+This is a simple program that creates a covert channel between client and server. 
 
 ##Usage
 pingClient.py:
 
-usage: pingClient.py [-h] [-d D] [-s S] [-m M]
+usage: pingClient.py [-h] [-d D] [-s S] [-m M] [-w W]
 
 arguments:
   -h, --help  show this help message and exit
@@ -21,7 +21,7 @@ arguments:
 
 pingServer.py:
 
-usage: pingServer.py [-h] [-s S]
+usage: pingServer.py [-h] [-s S] [-w W]
 
 arguments:
   -h, --help  show this help message and exit
