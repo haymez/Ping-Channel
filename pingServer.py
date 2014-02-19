@@ -76,7 +76,6 @@ else:
 		sniff(filter="icmp and (src " + str(args.s) + ")", prn=listener, stop_filter=stopListening)
 		while(len(binary) % 8 != 0):
 			binary = binary + "0"
-		print binary
 		print binToString(binary)
 		init()
 
