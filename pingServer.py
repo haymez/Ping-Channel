@@ -1,6 +1,9 @@
 from scapy.all import *
-import time, binascii, re
+import time, binascii, argparse, sys
 
+parser=argparse.ArgumentParser()
+parser.add_argument('-s', help = 'source IP address to listen for')
+args=parser.parse_args()
 
 y = 0
 binary = ""
@@ -11,8 +14,10 @@ curr_time_milli = lambda: int(round(time.time() * 1000))
 
 #Converts binary back to string
 def binToString(binary):
-	hexVal = hex(int(binary, 2))
-	return hexVal[2:].decode('hex')
+	hexVal = hex(int(binary, 2))[2:]
+	if(len(hexVal) % 2 != 0):
+		hexVal = hexVal[:len(hexVal)-1]
+	return hexVal.decode('hex')
 
 #initializes global variables back to defaults
 def init():
@@ -57,17 +62,21 @@ def listener(x):
 	else:
 		y = 0
 
-while(1):
-	#this sniffs for the first packet. after this packet, we start listening for message
-	sniff(iface="lo", filter="icmp and (src 192.168.1.190)", prn=listener, count=1)
-	
-	#sniff for message and timeout after 8 seconds
-	sniff(iface="lo", filter="icmp and (src 192.168.1.190)", prn=listener, stop_filter=stopListening)
-	while(len(binary) % 8 != 0):
-		binary = binary + "0"
-	
-	print binToString(binary)
-	init()
+if(len(sys.argv) < 2):
+	print "Incorrect number of inputs."
+	print "Try running 'sudo python pingServer.py -h' for more information."
+else:
+	while(1):
+		#this sniffs for the first packet. after this packet, we start listening for message
+		sniff(iface="lo", filter="icmp and (src " + str(args.s) + ")", prn=listener, count=1)
+		
+		#sniff for message and timeout after 8 seconds
+		sniff(iface="lo", filter="icmp and (src " + str(args.s) + ")", prn=listener, stop_filter=stopListening)
+		while(len(binary) % 8 != 0):
+			binary = binary + "0"
+		
+		print binToString(binary)
+		init()
 
 
 

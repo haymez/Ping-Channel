@@ -1,5 +1,11 @@
 from scapy.all import *
-import time, binascii
+import time, binascii, argparse, sys
+
+parser=argparse.ArgumentParser()
+parser.add_argument('-d', help = 'destination IP address')
+parser.add_argument('-s', help = 'source IP address')
+parser.add_argument('-m', help = 'message to send (in quotes)')
+args=parser.parse_args()
 
 
 def pinger(dst_ip, src_ip, last_bool):
@@ -43,9 +49,11 @@ def strToBinary(string):
 		binary = "0" + binary
 	return binary
 
-
-
-encodeMessage("127.0.0.1", "192.168.1.190", "Hi")
+if(len(sys.argv) < 4):
+	print "Incorrect number of inputs."
+	print "Try running 'sudo python pingClient.py -h' for more information."
+else:
+	encodeMessage(args.d, args.s, args.m)
 
 
 
