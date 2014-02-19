@@ -3,6 +3,7 @@ import time, binascii, argparse, sys
 
 parser=argparse.ArgumentParser()
 parser.add_argument('-s', help = 'source IP address to listen for')
+parser.add_argument('-w', help = 'wait time for timing channel (in seconds)', type=float)
 args=parser.parse_args()
 
 y = 0
@@ -46,12 +47,13 @@ def listener(x):
 	if(y == 0):
 		y = y + 1
 		
+		divider = int(1000 * args.w)
 		#this is the first ping we have recieved
 		if(currTime == 0):
-			currTime = curr_time_milli() - 100
+			currTime = curr_time_milli() - divider
 		#This is every ping after the first one
 		else:
-			zeroes = int(((curr_time_milli() - currTime)/100)) - 1
+			zeroes = int(round((curr_time_milli() - currTime)/divider)) - 1
 			currTime = curr_time_milli()
 			
 			#Add in zeroes
@@ -62,7 +64,7 @@ def listener(x):
 	else:
 		y = 0
 
-if(len(sys.argv) < 2):
+if(len(sys.argv) < 5):
 	print "Incorrect number of inputs."
 	print "Try running 'sudo python pingServer.py -h' for more information."
 else:
@@ -74,7 +76,7 @@ else:
 		sniff(filter="icmp and (src " + str(args.s) + ")", prn=listener, stop_filter=stopListening)
 		while(len(binary) % 8 != 0):
 			binary = binary + "0"
-		
+		print binary
 		print binToString(binary)
 		init()
 

@@ -5,6 +5,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('-d', help = 'destination IP address')
 parser.add_argument('-s', help = 'source IP address')
 parser.add_argument('-m', help = 'message to send (in quotes)')
+parser.add_argument('-w', help = 'wait time for timing channel (in seconds)', type=float)
 args=parser.parse_args()
 
 
@@ -35,9 +36,9 @@ def encodeMessage(dst_ip, src_ip, message):
 	for i in range(len(binary)):
 		if(binary[i:i+1] == "1"):
 			pinger(dst_ip, src_ip, 0)
-			time.sleep(.1)
+			time.sleep(args.w)
 		else:
-			time.sleep(.1)
+			time.sleep(args.w)
 	#send end of mesage ping
 	pinger(dst_ip, src_ip, 1)
 	
@@ -49,7 +50,7 @@ def strToBinary(string):
 		binary = "0" + binary
 	return binary
 
-if(len(sys.argv) < 4):
+if(len(sys.argv) < 9):
 	print "Incorrect number of inputs."
 	print "Try running 'sudo python pingClient.py -h' for more information."
 else:
