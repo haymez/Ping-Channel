@@ -68,10 +68,10 @@ if(len(sys.argv) < 2):
 else:
 	while(1):
 		#this sniffs for the first packet. after this packet, we start listening for message
-		sniff(iface="wlan0", filter="icmp and (src " + str(args.s) + ")", prn=listener, count=1)
+		sniff(filter="icmp and (src " + str(args.s) + ")", prn=listener, count=1)
 		
 		#sniff for message and timeout after 8 seconds
-		sniff(iface="wlan0", filter="icmp and (src " + str(args.s) + ")", prn=listener, stop_filter=stopListening)
+		sniff(filter="icmp and (src " + str(args.s) + ")", prn=listener, stop_filter=stopListening)
 		while(len(binary) % 8 != 0):
 			binary = binary + "0"
 		
