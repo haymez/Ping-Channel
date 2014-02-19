@@ -16,6 +16,7 @@ arguments:
   -d D        destination IP address
   -s S        source IP address
   -m M        message to send (in quotes)
+  -w W	      Wait time between packets
 
 
 pingServer.py:
@@ -25,3 +26,4 @@ usage: pingServer.py [-h] [-s S]
 arguments:
   -h, --help  show this help message and exit
   -s S        source IP address to listen for
+  -w W        Wait time between packets
