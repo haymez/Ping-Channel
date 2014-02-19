@@ -29,24 +29,6 @@ def init():
 	global currTime
 	currTime = 0
 
-#sends a ping
-def pinger(dst_ip, src_ip, last_bool):
-	# define ip and icmp
-	ip = IP()
-	icmp = ICMP()
-	
-	#set destination and source IP
-	ip.dst = dst_ip
-	ip.src = src_ip
-	if(last_bool == 1):
-		ip.ttl = 100
-	icmp.type = 8
-	icmp.code = 0
-	
-	#Send packet
-	send(ip/icmp)
-
-
 #Listens for end packet
 def stopListening(x):
 	if(x[IP].ttl == 100):
@@ -68,7 +50,6 @@ def listener(x):
 		#this is the first ping we have recieved
 		if(currTime == 0):
 			currTime = curr_time_milli() - divider
-			pinger(args.s, "192.169.1.150", 0)
 		#This is every ping after the first one
 		else:
 			zeroes = int(round((curr_time_milli() - currTime)/divider)) - 1

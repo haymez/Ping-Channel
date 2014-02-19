@@ -32,7 +32,6 @@ def encodeMessage(dst_ip, src_ip, message):
 	binary = strToBinary(message)
 	#initial ping to start timeout of sniffer
 	pinger(dst_ip, src_ip, 0)
-	sniff(filter="icmp and (src " + dst_ip + ")",count=1)
 	for i in range(len(binary)):
 		if(binary[i:i+1] == "1"):
 			pinger(dst_ip, src_ip, 0)
