@@ -1,5 +1,5 @@
 from scapy.all import *
-import time, binascii
+import time, binascii, re
 
 
 y = 0
@@ -11,8 +11,8 @@ curr_time_milli = lambda: int(round(time.time() * 1000))
 
 #Converts binary back to string
 def binToString(binary):
-	print "Finish this code"
-	#code here
+	hexVal = hex(int(binary, 2))
+	return hexVal[2:].decode('hex')
 
 #initializes global variables back to defaults
 def init():
@@ -26,9 +26,7 @@ def init():
 
 #Listens for end packet
 def stopListening(x):
-	print x[IP].ttl
 	if(x[IP].ttl == 100):
-		print "END IT!!"
 		return True
 	else:
 		return False
@@ -48,7 +46,7 @@ def listener(x):
 			currTime = curr_time_milli() - 100
 		#This is every ping after the first one
 		else:
-			zeroes = ((curr_time_milli() - currTime)/100) - 1
+			zeroes = int(((curr_time_milli() - currTime)/100)) - 1
 			currTime = curr_time_milli()
 			
 			#Add in zeroes
@@ -68,8 +66,7 @@ while(1):
 	while(len(binary) % 8 != 0):
 		binary = binary + "0"
 	
-	#print binToString(binary)
-	print binary
+	print binToString(binary)
 	init()
 
 

@@ -26,15 +26,13 @@ def encodeMessage(dst_ip, src_ip, message):
 	#initial ping to start timeout of sniffer
 	pinger(dst_ip, src_ip, 0)
 	
-	#iterate through binary string
-	while(len(binary) > 0):
-		if(binary[:1] == "1"):
+	for i in range(len(binary)):
+		if(binary[i:i+1] == "1"):
 			pinger(dst_ip, src_ip, 0)
 			time.sleep(.1)
 		else:
 			time.sleep(.1)
-		binary = binary[1:]
-	
+	#send end of mesage ping
 	pinger(dst_ip, src_ip, 1)
 	
 
@@ -47,7 +45,7 @@ def strToBinary(string):
 
 
 
-encodeMessage("127.0.0.1", "192.168.1.190", "We will meet in the park at midnight tonight.")
+encodeMessage("127.0.0.1", "192.168.1.190", "Hi")
 
 
 
