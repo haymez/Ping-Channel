@@ -4,6 +4,7 @@ import time, binascii, argparse, sys
 parser=argparse.ArgumentParser()
 parser.add_argument('-s', help = 'source IP address to listen for')
 parser.add_argument('-w', help = 'wait time for timing channel (in seconds)', type=float)
+parser.add_argument('-host', help = 'This machines IP address')
 args=parser.parse_args()
 
 y = 0
@@ -29,6 +30,22 @@ def init():
 	global currTime
 	currTime = 0
 
+def pinger(dst_ip, src_ip, last_bool):
+	# define ip and icmp
+	ip = IP()
+	icmp = ICMP()
+	
+	#set destination and source IP
+	ip.dst = dst_ip
+	ip.src = src_ip
+	if(last_bool == 1):
+		ip.ttl = 100
+	icmp.type = 8
+	icmp.code = 0
+	
+	#Send packet
+	send(ip/icmp)
+
 #Listens for end packet
 def stopListening(x):
 	if(x[IP].ttl == 100):
@@ -49,7 +66,9 @@ def listener(x):
 		divider = int(1000 * args.w)
 		#this is the first ping we have recieved
 		if(currTime == 0):
+			print "MAC ADDRESS: " + str(x[Ether].src)
 			currTime = curr_time_milli() - divider
+			#pinger("1.1.1.1", args.host, 0)
 		#This is every ping after the first one
 		else:
 			zeroes = int(round((curr_time_milli() - currTime)/divider)) - 1
@@ -62,7 +81,7 @@ def listener(x):
 	else:
 		y = 0
 
-if(len(sys.argv) < 5):
+if(len(sys.argv) < 7):
 	print "Incorrect number of inputs."
 	print "Try running 'sudo python pingServer.py -h' for more information."
 else:
