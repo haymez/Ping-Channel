@@ -4,7 +4,6 @@ import time, binascii, argparse, sys
 parser=argparse.ArgumentParser()
 parser.add_argument('-s', help = 'source IP address to listen for')
 parser.add_argument('-w', help = 'wait time for timing channel (in seconds)', type=float)
-parser.add_argument('-host', help = 'This machines IP address')
 args=parser.parse_args()
 
 y = 0
@@ -66,9 +65,7 @@ def listener(x):
 		divider = int(1000 * args.w)
 		#this is the first ping we have recieved
 		if(currTime == 0):
-			print "MAC ADDRESS: " + str(x[Ether].src)
 			currTime = curr_time_milli() - divider
-			#pinger("1.1.1.1", args.host, 0)
 		#This is every ping after the first one
 		else:
 			zeroes = int(round((curr_time_milli() - currTime)/divider)) - 1
@@ -81,7 +78,7 @@ def listener(x):
 	else:
 		y = 0
 
-if(len(sys.argv) < 7):
+if(len(sys.argv) < 5):
 	print "Incorrect number of inputs."
 	print "Try running 'sudo python pingServer.py -h' for more information."
 else:
